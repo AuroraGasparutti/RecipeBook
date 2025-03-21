@@ -69,7 +69,7 @@ const recipesDiv = document.getElementById("recipesDiv");
 
 const row = document.createElement("div");
 row.className = "row row-cols-5 g-3";
-cardsDiv.appendChild(row);
+recipesDiv.appendChild(row);
 
 recipes.forEach(recipe => {
     const col = document.createElement("div");
@@ -77,19 +77,19 @@ recipes.forEach(recipe => {
 
     const card = document.createElement("div");
     card.className = "card h-100";
-    card.id = `${student.numero}`;
+    card.id = `${recipe.id}`;
 
     const img = document.createElement("img");
-    img.src = student.immagine;
-    img.alt = `Studente nr.${student.numero}`;
+    img.src = recipe.immagineUrl;
+    img.alt = `Ricetta nr.${recipe.id}`;
     img.className = "card-img-top";
 
-    const studNameSurname = document.createElement("p");
-    studNameSurname.className = "card-text";
-    studNameSurname.innerHTML = `${student.nome} ${student.cognome}`;
+    const recipeName = document.createElement("h3");
+    recipeName.className = "card-text";
+    recipeName.innerHTML = `${recipe.nome}`;
 
     card.appendChild(img);
-    card.appendChild(studNameSurname);
+    card.appendChild(recipeName);
     col.appendChild(card);
     row.appendChild(col);
 });
