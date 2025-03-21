@@ -78,6 +78,10 @@ detailsContainer.id = "recipeDetailsContainer";
 detailsContainer.className = "mt-4";
 recipesDiv.appendChild(detailsContainer);
 
+// Variable to store the currently selected recipe and portion count
+let currentRecipeId = null;
+let currentPortions = 1;
+
 // Function to highlight the selected card
 function highlightSelectedCard(selectedId) {
     // Remove highlight from all cards
@@ -94,12 +98,76 @@ function highlightSelectedCard(selectedId) {
     }
 }
 
+// Function to calculate ingredient quantities based on portions
+function calculateIngredientQuantity(baseQuantity, portions) {
+    // Convert to number to ensure proper calculation
+    const quantity = parseFloat(baseQuantity);
+    
+    if (isNaN(quantity)) {
+        return baseQuantity; // Return original if not a number
+    }
+    
+    // Calculate new quantity based on portions
+    const newQuantity = quantity * portions;
+    
+    // Format the result to avoid too many decimal places
+    // For small quantities, keep one decimal place
+    // For larger quantities, round to whole numbers
+    return newQuantity < 10 ? newQuantity.toFixed(1).replace(/\.0$/, '') : Math.round(newQuantity);
+}
+
+// Function to update ingredient list based on portion count
+function updateIngredients(recipe, portions) {
+    const ingredientsList = document.getElementById('ingredientsList');
+    if (!ingredientsList) return;
+    
+    // Clear current ingredients
+    ingredientsList.innerHTML = '';
+    
+    // Add updated ingredients
+    recipe.ingredienti.forEach(ingrediente => {
+        const newQuantity = calculateIngredientQuantity(ingrediente.quantità, portions);
+        const li = document.createElement('li');
+        li.textContent = `${ingrediente.nome}: ${newQuantity} ${ingrediente["unità di misura"]}`;
+        ingredientsList.appendChild(li);
+    });
+}
+
+// Function to handle portion changes
+function changePortions(change) {
+    // Get the new portion count
+    const newPortions = Math.max(1, currentPortions + change); // Ensure minimum of 1
+    
+    // If no change, exit
+    if (newPortions === currentPortions) return;
+    
+    // Update the current portions
+    currentPortions = newPortions;
+    
+    // Update the display
+    const portionCountElement = document.getElementById('portionCount');
+    if (portionCountElement) {
+        portionCountElement.textContent = currentPortions;
+    }
+    
+    // Find the current recipe
+    const recipe = recipes.find(r => r.id === currentRecipeId);
+    if (recipe) {
+        // Update the ingredients
+        updateIngredients(recipe, currentPortions);
+    }
+}
+
 // Function to display recipe details
 function showRecipeDetails(recipeId) {
     // Find the recipe with the matching ID
     const selectedRecipe = recipes.find(recipe => recipe.id === recipeId);
     
     if (selectedRecipe) {
+        // Update current recipe tracking
+        currentRecipeId = recipeId;
+        currentPortions = 1; // Reset portions when changing recipes
+        
         // Highlight the selected card
         highlightSelectedCard(recipeId);
         
@@ -128,16 +196,25 @@ function showRecipeDetails(recipeId) {
                                     <li><strong>Tempo di preparazione:</strong> ${selectedRecipe.tempo_di_preparazione}</li>
                                     <li><strong>Tempo di cottura:</strong> ${selectedRecipe.tempo_di_cottura}</li>
                                     <li><strong>Difficoltà:</strong> ${selectedRecipe.difficolta}</li>
-                                    <li><strong>Porzioni:</strong> ${selectedRecipe.porzione}</li>
+                                    <li>
+                                        <div class="d-flex align-items-center mt-2">
+                                            <strong class="me-2">Porzioni:</strong>
+                                            <div class="portion-control d-flex align-items-center">
+                                                <button id="decreasePortions" class="btn btn-sm btn-outline-primary" style="width: 30px; height: 30px; padding: 0; display: flex; align-items: center; justify-content: center;">-</button>
+                                                <span id="portionCount" class="mx-2">${currentPortions}</span>
+                                                <button id="increasePortions" class="btn btn-sm btn-outline-primary" style="width: 30px; height: 30px; padding: 0; display: flex; align-items: center; justify-content: center;">+</button>
+                                            </div>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-8">
                             <div class="mb-4">
                                 <h4 class="border-bottom pb-2">Ingredienti</h4>
-                                <ul>`;
+                                <ul id="ingredientsList">`;
         
-        // Add ingredients
+        // Add ingredients (initial state with 1 portion)
         selectedRecipe.ingredienti.forEach(ingrediente => {
             detailsHTML += `<li>${ingrediente.nome}: ${ingrediente.quantità} ${ingrediente["unità di misura"]}</li>`;
         });
@@ -168,6 +245,10 @@ function showRecipeDetails(recipeId) {
         
         // Make the details container visible if it was hidden
         detailsContainer.style.display = 'block';
+        
+        // Add event listeners for portion control buttons
+        document.getElementById('decreasePortions').addEventListener('click', () => changePortions(-1));
+        document.getElementById('increasePortions').addEventListener('click', () => changePortions(1));
     }
 }
 
