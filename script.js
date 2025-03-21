@@ -314,3 +314,6 @@ recipes.forEach(recipe => {
 
 // Initially hide the details container until a recipe is selected
 detailsContainer.style.display = 'none';
+
+
+//COMMENTO DI MODIFICA
