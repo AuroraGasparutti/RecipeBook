@@ -1,10 +1,12 @@
 const recipes = [
         {
+            "id": 0,
             "nome": "Pasta frolla",
             "tempo_di_preparazione": "20 minuti",
             "tempo_di_cottura": "15 minuti",
             "difficolta": "Media",
             "porzione": "1",
+            "immagineUrl": "https://www.giallozafferano.it/images/173-17338/Pasta-frolla_650x433_wm.jpg",
             "ingredienti": [
                 { "nome": "Farina", "quantità": "100", "unità di misura": "grammi" },
                 { "nome": "Burro", "quantità": "50", "unità di misura": "grammi" },
@@ -19,11 +21,13 @@ const recipes = [
             ]
         },
         {
+            "id": 1,
             "nome": "Omelette",
             "tempo_di_preparazione": "5 minuti",
             "tempo_di_cottura": "5 minuti",
             "difficolta": "Facile",
             "porzione": "1",
+            "immagineUrl": "https://www.giallozafferano.it/images/ricette/176/17665/foto_hd/hd650x433_wm.jpg",
             "ingredienti": [
                 { "nome": "Uovo", "quantità": "1", "unità di misura": "pezzo" },
                 { "nome": "Latte", "quantità": "10", "unità di misura": "ml" },
@@ -38,11 +42,13 @@ const recipes = [
             ]
         },
         {
+            "id": 2,
             "nome": "Toast con avocado",
             "tempo_di_preparazione": "5 minuti",
             "tempo di_cottura": "2 minuti",
             "difficolta": "Facile",
             "porzione": "1",
+            "immagineUrl": "https://lovefoodfeed.com/wp-content/uploads/2025/01/Avocado-toast-1200-05.jpg",
             "ingredienti": [
                 { "nome": "Pane", "quantità": "1", "unità di misura": "fetta" },
                 { "nome": "Avocado", "quantità": "50", "unità di misura": "grammi" },
@@ -61,13 +67,11 @@ const recipes = [
 
 const recipesDiv = document.getElementById("recipesDiv");
 
-randomBtn.addEventListener("click", suspance);
-
 const row = document.createElement("div");
 row.className = "row row-cols-5 g-3";
 cardsDiv.appendChild(row);
 
-cardData.forEach(student => {
+recipes.forEach(recipe => {
     const col = document.createElement("div");
     col.className = "col"; 
 
