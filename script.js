@@ -59,4 +59,33 @@ const recipes = [
     
 ];
 
+const recipesDiv = document.getElementById("recipesDiv");
 
+randomBtn.addEventListener("click", suspance);
+
+const row = document.createElement("div");
+row.className = "row row-cols-5 g-3";
+cardsDiv.appendChild(row);
+
+cardData.forEach(student => {
+    const col = document.createElement("div");
+    col.className = "col"; 
+
+    const card = document.createElement("div");
+    card.className = "card h-100";
+    card.id = `${student.numero}`;
+
+    const img = document.createElement("img");
+    img.src = student.immagine;
+    img.alt = `Studente nr.${student.numero}`;
+    img.className = "card-img-top";
+
+    const studNameSurname = document.createElement("p");
+    studNameSurname.className = "card-text";
+    studNameSurname.innerHTML = `${student.nome} ${student.cognome}`;
+
+    card.appendChild(img);
+    card.appendChild(studNameSurname);
+    col.appendChild(card);
+    row.appendChild(col);
+});
