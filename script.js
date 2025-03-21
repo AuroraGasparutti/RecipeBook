@@ -78,6 +78,14 @@ recipes.forEach(recipe => {
     const card = document.createElement("div");
     card.className = "card h-100";
     card.id = `${recipe.id}`;
+    
+    // Make the card clickable with cursor pointer
+    card.style.cursor = "pointer";
+    
+    // Add click event listener to the card
+    card.addEventListener("click", function() {
+        showRecipeDetails(recipe.id);
+    });
 
     const img = document.createElement("img");
     img.src = recipe.immagineUrl;
@@ -93,4 +101,23 @@ recipes.forEach(recipe => {
     col.appendChild(card);
     row.appendChild(col);
 });
+
+// Function to handle the click event
+function showRecipeDetails(recipeId) {
+    console.log(`Recipe clicked: ${recipeId}`);
+    
+    // Find the recipe with the matching ID
+    const selectedRecipe = recipes.find(recipe => recipe.id === recipeId);
+    
+    if (selectedRecipe) {
+        // Here you can implement what happens when a recipe is clicked
+        // For example, you could display a modal with recipe details
+        // or navigate to a different page
+        
+        alert(`Hai selezionato: ${selectedRecipe.nome}`);
+        
+        // You can expand this function to show more details or
+        // redirect to a detailed recipe page
+    }
+}
 
