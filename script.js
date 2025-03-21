@@ -93,3 +93,15 @@ recipes.forEach(recipe => {
     col.appendChild(card);
     row.appendChild(col);
 });
+
+function openWindowOfRecipe(recipeNumber) {
+    
+let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+width=600,height=300,left=100,top=100`;
+
+let newWin = window("about:blank", "hello", params);
+let html = `<div style="font-size:30px">${recipeNumber}</div>`;
+  newWin.document.body.insertAdjacentHTML('afterbegin', html);
+  newWin.open();
+}
+
